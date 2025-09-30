@@ -26,7 +26,7 @@ class Supplier extends Model
         'updated_date'
     ];
 
-    protected $dates = ['added_date','updated_date'];
+    protected $dates = ['deleted_at','added_date','updated_date'];
 
     // Relationships
     public function fabrics()

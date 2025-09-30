@@ -73,4 +73,19 @@ class SupplierWebController extends Controller
         $supplier->delete();
         return redirect()->route('web.suppliers.index')->with('success', 'Supplier deleted successfully!');
     }
+
+    public function trashed()
+    {
+        $suppliers = Supplier::onlyTrashed()->latest()->paginate(10);
+        return view('suppliers.trashed', compact('suppliers'));
+    }
+
+    public function restore($id)
+    {
+        $supplier = Supplier::onlyTrashed()->findOrFail($id);
+        $supplier->restore();
+
+        return redirect()->route('web.suppliers.trashed')
+                        ->with('success', 'Supplier restored successfully!');
+    }
 }

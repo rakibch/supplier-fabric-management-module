@@ -23,6 +23,10 @@
             class="border rounded p-2">
             <button class="bg-gray-700 text-white px-4 py-2 rounded">Filter</button>
         </form>
+        <a href="{{ route('web.suppliers.trashed') }}" class="bg-gray-700 text-white px-4 py-2 rounded">
+    View Trashed Suppliers
+</a>
+
 
         <table class="table-auto w-full mt-4 border">
             <thead>
