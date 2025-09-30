@@ -13,11 +13,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        \App\Models\User::factory()->create([
+        'name' => 'Admin User',
+        'email' => 'admin@example.com',
+        'password' => bcrypt('password'),
+    ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+    \App\Models\Supplier::factory(8)->create()->each(function($supplier) {
+        \App\Models\Fabric::factory(rand(1,4))->create(['supplier_id' => $supplier->id]);
+    });
+
+    // Add some stocks
+    \App\Models\Fabric::all()->each(function($fabric) {
+        \App\Models\FabricStock::create([
+            'fabric_id' => $fabric->id,
+            'type' => 'in',
+            'qty' => rand(10,100),
+            'created_by' => 1
         ]);
+        \App\Models\FabricStock::create([
+            'fabric_id' => $fabric->id,
+            'type' => 'out',
+            'qty' => rand(0,10),
+            'created_by' => 1
+        ]);
+    });
     }
 }
