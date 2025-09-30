@@ -6,15 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreSupplierRequest;
+use App\Http\Requests\UpdateSupplierRequest;
 
 class SupplierWebController extends Controller
 {
     public function index(Request $request)
     {
-        $filters = $request->only(['country','company_name','rep_name','date_from','date_to']);
+        $filters = $request->only(['country', 'company_name', 'rep_name', 'date_from', 'date_to']);
         $suppliers = Supplier::filter($filters)->latest()->paginate(10);
 
-        return view('suppliers.index', compact('suppliers','filters'));
+        return view('suppliers.index', compact('suppliers', 'filters'));
     }
 
     public function create()
@@ -22,14 +24,8 @@ class SupplierWebController extends Controller
         return view('suppliers.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreSupplierRequest $request)
     {
-        $request->validate([
-            'country' => 'required|string',
-            'company_name' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:suppliers,code',
-        ]);
-
         $supplier = Supplier::create([
             'country' => $request->country,
             'company_name' => $request->company_name,
@@ -44,42 +40,37 @@ class SupplierWebController extends Controller
             'added_date' => now(),
         ]);
 
-        return redirect()->route('suppliers.index')->with('success','Supplier added successfully!');
+        return redirect()
+            ->route('suppliers.web.index')
+            ->with('success', 'Supplier added successfully!');
     }
 
     public function edit(Supplier $supplier)
     {
-        return view('suppliers.edit', compact('supplier'));
+        return view('suppliers.web.edit', compact('supplier'));
     }
 
-    public function update(Request $request, Supplier $supplier)
+    public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
-        $request->validate([
-            'country' => 'required|string',
-            'company_name' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:suppliers,code,'.$supplier->id,
-        ]);
+        $data = $request->validated();
 
-        $supplier->update([
-            'country' => $request->country,
-            'company_name' => $request->company_name,
-            'code' => $request->code,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'rep_name' => $request->rep_name,
-            'rep_email' => $request->rep_email,
-            'rep_phone' => $request->rep_phone,
-            'updated_by' => Auth::id(),
-            'updated_date' => now(),
-        ]);
+        $data['rep_name'] = $data['representative_name'] ?? null;
+        $data['rep_email'] = $data['representative_email'] ?? null;
+        $data['rep_phone'] = $data['representative_phone'] ?? null;
 
-        return redirect()->route('suppliers.index')->with('success','Supplier updated successfully!');
+        $data['updated_by'] = Auth::id();
+        $data['updated_date'] = now();
+
+        $supplier->update($data);
+
+        return redirect()
+            ->route('suppliers.web.index')
+            ->with('success', 'Supplier updated successfully!');
     }
 
     public function destroy(Supplier $supplier)
     {
         $supplier->delete();
-        return redirect()->route('suppliers.index')->with('success','Supplier deleted successfully!');
+        return redirect()->route('suppliers.web.index')->with('success', 'Supplier deleted successfully!');
     }
 }

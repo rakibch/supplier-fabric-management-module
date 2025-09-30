@@ -17,7 +17,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('suppliers', SupplierWebController::class);
+});
+
+Route::middleware(['auth'])->prefix('suppliers')->name('web.suppliers.')->group(function () {
+    Route::get('/', [SupplierWebController::class, 'index'])->name('index');
+    Route::get('/create', [SupplierWebController::class, 'create'])->name('create');
+    Route::post('/', [SupplierWebController::class, 'store'])->name('store');
+    Route::get('/{supplier}/edit', [SupplierWebController::class, 'edit'])->name('edit');
+    Route::put('/{supplier}', [SupplierWebController::class, 'update'])->name('update');
+    Route::delete('/{supplier}', [SupplierWebController::class, 'destroy'])->name('destroy');
 });
 
 require __DIR__.'/auth.php';
