@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\Supplier;
+use App\Models\Fabric;
+use App\Observers\SupplierObserver;
+use App\Observers\FabricObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Supplier::observe(SupplierObserver::class);
+        Fabric::observe(FabricObserver::class);
     }
 }
