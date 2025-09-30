@@ -25,7 +25,7 @@ class UpdateSupplierRequest extends FormRequest
     public function rules(): array
     {
         // Get supplier ID for unique validation (ignore current record)
-        $supplierId = $this->route('supplier');
+        $supplierId = $this->route('web.suppliers') ? $this->route('web.suppliers')->id : null;
 
         return [
             'country' => ['required', 'string', 'max:100'],

@@ -41,13 +41,13 @@ class SupplierWebController extends Controller
         ]);
 
         return redirect()
-            ->route('suppliers.web.index')
+            ->route('web.suppliers.index')
             ->with('success', 'Supplier added successfully!');
     }
 
     public function edit(Supplier $supplier)
     {
-        return view('suppliers.web.edit', compact('supplier'));
+        return view('suppliers.edit', compact('supplier'));
     }
 
     public function update(UpdateSupplierRequest $request, Supplier $supplier)
@@ -64,13 +64,13 @@ class SupplierWebController extends Controller
         $supplier->update($data);
 
         return redirect()
-            ->route('suppliers.web.index')
+            ->route('web.suppliers.index')
             ->with('success', 'Supplier updated successfully!');
     }
 
     public function destroy(Supplier $supplier)
     {
         $supplier->delete();
-        return redirect()->route('suppliers.web.index')->with('success', 'Supplier deleted successfully!');
+        return redirect()->route('web.suppliers.index')->with('success', 'Supplier deleted successfully!');
     }
 }
