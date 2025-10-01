@@ -34,7 +34,7 @@
                     <th class="px-4 py-2">Company</th>
                     <th class="px-4 py-2">Country</th>
                     <th class="px-4 py-2">Representative</th>
-                    <th class="px-4 py-2">Added By</th>
+                    <th class="px-4 py-2">Added Date</th>
                      <th class="px-4 py-2">Join Date</th>
                     <th class="px-4 py-2">Actions</th>
                 </tr>
@@ -47,7 +47,7 @@
                     <td class="border px-4 py-2">{{ $supplier->country }}</td>
                     <td class="border px-4 py-2">{{ $supplier->rep_name }}</td>
                     <td class="border px-4 py-2">{{ optional($supplier->addedBy)->name }}</td>
-                    <td class="border px-4 py-2">{{ $supplier->created_at->format('Y-m-d') }}</td>
+                    <td class="border px-4 py-2">{{ $supplier->added_date->format('Y-m-d') }}</td>
                     <td class="border px-4 py-2">
                         <a href="{{ route('web.suppliers.edit',$supplier) }}" class="text-blue-500">Edit</a>
                         <form action="{{ route('web.suppliers.destroy',$supplier) }}" method="POST" class="inline">

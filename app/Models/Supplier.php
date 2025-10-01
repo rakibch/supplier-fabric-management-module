@@ -28,6 +28,10 @@ class Supplier extends Model
 
     protected $dates = ['deleted_at','added_date','updated_date'];
 
+    protected $casts = [
+        'added_date' => 'datetime', 
+    ];
+
     // Relationships
     public function fabrics()
     {
