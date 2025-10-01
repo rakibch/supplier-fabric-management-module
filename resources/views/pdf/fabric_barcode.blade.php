@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Fabric Barcode</title>
     <style>
-        body { font-family: sans-serif; }
+        body { font-family: DejaVu Sans, sans-serif; }
         .sticker { width: 280px; height: 140px; border:1px solid #000; padding:8px; }
         .barcode { text-align:center; margin-top:6px; }
         .meta { font-size:12px; margin-top:6px; }
