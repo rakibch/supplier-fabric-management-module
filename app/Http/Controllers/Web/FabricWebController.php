@@ -55,6 +55,12 @@ class FabricWebController extends Controller
         $data['added_date'] = now();
 
         $fabric = Fabric::create($data);
+        if ($request->filled('notes')) {
+            $fabric->notes()->create([
+                'note' => $request->notes,
+                'created_by' => Auth::id(),
+            ]);
+        }
 
         // initial stock record for qty if provided
         if (!empty($fabric->qty) && (int)$fabric->qty > 0) {

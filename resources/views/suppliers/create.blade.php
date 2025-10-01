@@ -105,6 +105,15 @@
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
+                 <div>
+                    <label class="block mb-1">Notes</label>
+                    <input type="text" name="notes"
+                           value="{{ old('notes') }}"
+                           class="border w-full p-2 @error('notes') border-red-500 @enderror">
+                    @error('notes')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
             <button type="submit"

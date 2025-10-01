@@ -39,7 +39,12 @@ class SupplierWebController extends Controller
             'added_by' => Auth::id(),
             'added_date' => now(),
         ]);
-
+        if ($request->filled('notes')) {
+            $supplier->notes()->create([
+                'note' => $request->notes,
+                'created_by' => Auth::id(),
+            ]);
+        }
         return redirect()
             ->route('web.suppliers.index')
             ->with('success', 'Supplier added successfully!');

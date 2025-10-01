@@ -85,6 +85,11 @@
                         <p class="text-red-600 text-sm">{{ $message }}</p>
                     @enderror
                 </div>
+                 <div class="md:col-span-2">
+                    <label class="block text-sm">Notes</label>
+                    <textarea name="notes" placeholder="Notes for fabric" class="w-full p-2 border rounded">{{ old('notes') }}</textarea>
+                </div>
+
 
                 <div class="md:col-span-2">
                     <label class="block text-sm">Image (optional)</label>

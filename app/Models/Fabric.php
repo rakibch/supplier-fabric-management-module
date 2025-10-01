@@ -67,7 +67,6 @@ class Fabric extends Model
     public function getAvailableBalanceAttribute()
     {
         return app('App\\Helpers\\FabricHelper')->calculateFabricBalance($this->id);
-        // or call helper function calculateFabricBalance($this->id)
     }
 
     // Mutator: uppercase fabric_no
