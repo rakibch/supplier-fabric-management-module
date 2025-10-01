@@ -31,6 +31,8 @@ Route::middleware(['auth'])->prefix('suppliers')->name('web.suppliers.')->group(
 });
 
 Route::prefix('fabrics')->name('web.fabrics.')->group(function () {
+    Route::get('/trash', [FabricWebController::class, 'trash'])->name('trash');
+    Route::post('/{id}/restore', [FabricWebController::class, 'restore'])->name('restore');
     Route::get('/', [FabricWebController::class, 'index'])->name('index');
     Route::get('/create', [FabricWebController::class, 'create'])->name('create');
     Route::post('/', [FabricWebController::class, 'store'])->name('store');
@@ -38,13 +40,11 @@ Route::prefix('fabrics')->name('web.fabrics.')->group(function () {
     Route::get('/{fabric}/edit', [FabricWebController::class, 'edit'])->name('edit');
     Route::put('/{fabric}', [FabricWebController::class, 'update'])->name('update');
     Route::delete('/{fabric}', [FabricWebController::class, 'destroy'])->name('destroy');
-    Route::get('/trash', [FabricWebController::class, 'trash'])->name('trash');
-    Route::post('/{id}/restore', [FabricWebController::class, 'restore'])->name('restore');
 
     // stock, barcode, print PDF
     Route::post('/{fabric}/stock', [FabricWebController::class, 'addStock'])->name('addStock');
-    Route::get('/{fabric}/barcode', [FabricWebController::class, 'barcode'])->name('barcode'); // show latest barcode
-    Route::get('/barcodes/{barcode}/print', [FabricWebController::class, 'printBarcode'])->name('barcode.print'); // print pdf
+    Route::get('/{fabric}/barcode', [FabricWebController::class, 'barcode'])->name('barcode');
+    Route::get('/barcodes/{barcode}/print', [FabricWebController::class, 'printBarcode'])->name('barcode.print');
 });
 
 require __DIR__ . '/auth.php';

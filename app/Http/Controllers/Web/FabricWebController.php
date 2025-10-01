@@ -121,7 +121,8 @@ class FabricWebController extends Controller
 
     public function trash()
     {
-        $fabrics = Fabric::onlyTrashed()->paginate(12);
+        echo 'ok';
+        $fabrics = Fabric::onlyTrashed()->paginate(10);
         return view('fabrics.trash', compact('fabrics'));
     }
 
