@@ -4,7 +4,6 @@
             <h2 class="font-semibold text-xl">Fabric: {{ $fabric->fabric_no }}</h2>
             <div>
                 <a href="{{ route('web.fabrics.edit', $fabric) }}" class="px-3 py-2 bg-yellow-500 text-white rounded">Edit</a>
-                <a href="{{ route('web.fabrics.barcode', $fabric) }}" class="px-3 py-2 bg-gray-700 text-white rounded">Barcode</a>
             </div>
         </div>
     </x-slot>
@@ -70,7 +69,7 @@
                         <div class="flex items-center justify-between mt-2">
                             <div>{{ $b->barcode_value }} <small class="text-gray-500">({{ $b->created_at->format('Y-m-d') }})</small></div>
                             <div>
-                                <a href="{{ route('web.fabrics.barcode.print', $b) }}" class="px-2 py-1 bg-gray-800 text-white text-sm rounded">Print PDF</a>
+                                <a href="{{ route('web.fabrics.barcode.print', $b) }}" class="px-2 py-1 bg-gray-800 text-white text-sm rounded">Barcode PDF</a>
                             </div>
                         </div>
                     @endforeach

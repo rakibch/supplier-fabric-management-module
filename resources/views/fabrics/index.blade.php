@@ -52,7 +52,6 @@
                                     @csrf @method('DELETE')
                                     <button onclick="return confirm('Delete fabric?')" class="text-red-600">Delete</button>
                                 </form>
-                                <a href="{{ route('web.fabrics.barcode', $f) }}" class="ml-2 text-gray-700">Barcode</a>
                             </td>
                         </tr>
                     @empty
