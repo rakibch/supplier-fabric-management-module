@@ -1,135 +1,154 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Edit Fabric
+        </h2>
+    </x-slot>
 
-@section('content')
-<div class="container">
-    <h2>Edit Fabric</h2>
+    <div class="py-6">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
 
-    <form action="{{ route('fabrics.update', $fabric->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+                    {{-- Show global errors --}}
+                    @if ($errors->any())
+                        <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+                            <ul class="list-disc pl-5">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                  
+                    <form action="{{ route('web.fabrics.update', $fabric->id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
 
-        {{-- Fabric No --}}
-        <div class="mb-3">
-            <label for="fabric_no" class="form-label">Fabric No *</label>
-            <input type="text" name="fabric_no" class="form-control"
-                   value="{{ old('fabric_no', $fabric->fabric_no) }}" required>
+                        {{-- Fabric No --}}
+                        <div class="mb-4">
+                            <label for="fabric_no" class="block font-medium text-sm text-gray-700">Fabric No *</label>
+                            <input type="text" name="fabric_no" id="fabric_no"
+                                   value="{{ old('fabric_no', $fabric->fabric_no) }}"
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('fabric_no') border-red-500 @enderror"
+                                   required>
+                            @error('fabric_no')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Composition --}}
+                        <div class="mb-4">
+                            <label for="composition" class="block font-medium text-sm text-gray-700">Composition *</label>
+                            <input type="text" name="composition" id="composition"
+                                   value="{{ old('composition', $fabric->composition) }}"
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('composition') border-red-500 @enderror"
+                                   required>
+                            @error('composition')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- GSM --}}
+                        <div class="mb-4">
+                            <label for="gsm" class="block font-medium text-sm text-gray-700">GSM *</label>
+                            <input type="number" name="gsm" id="gsm"
+                                   value="{{ old('gsm', $fabric->gsm) }}"
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('gsm') border-red-500 @enderror"
+                                   required>
+                            @error('gsm')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Qty --}}
+                        <div class="mb-4">
+                            <label for="qty" class="block font-medium text-sm text-gray-700">QTY *</label>
+                            <input type="number" name="qty" id="qty"
+                                   value="{{ old('qty', $fabric->qty) }}"
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('qty') border-red-500 @enderror"
+                                   required>
+                            @error('qty')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Cuttable Width --}}
+                        <div class="mb-4">
+                            <label for="cuttable_width" class="block font-medium text-sm text-gray-700">Cuttable Width *</label>
+                            <input type="text" name="cuttable_width" id="cuttable_width"
+                                   value="{{ old('cuttable_width', $fabric->cuttable_width) }}"
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('cuttable_width') border-red-500 @enderror"
+                                   required>
+                            @error('cuttable_width')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Production Type --}}
+                        <div class="mb-4">
+                            <label for="production_type" class="block font-medium text-sm text-gray-700">Production Type *</label>
+                            <select name="production_type" id="production_type"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('production_type') border-red-500 @enderror"
+                                    required>
+                                <option value="Sample Yardage" {{ old('production_type', $fabric->production_type) == 'Sample Yardage' ? 'selected' : '' }}>Sample Yardage</option>
+                                <option value="SMS" {{ old('production_type', $fabric->production_type) == 'SMS' ? 'selected' : '' }}>SMS</option>
+                                <option value="Bulk" {{ old('production_type', $fabric->production_type) == 'Bulk' ? 'selected' : '' }}>Bulk</option>
+                            </select>
+                            @error('production_type')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Construction --}}
+                        <div class="mb-4">
+                            <label for="construction" class="block font-medium text-sm text-gray-700">Construction</label>
+                            <input type="text" name="construction" id="construction"
+                                   value="{{ old('construction', $fabric->construction) }}"
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('construction') border-red-500 @enderror">
+                            @error('construction')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Fabric Image --}}
+                        <div class="mb-4">
+                            <label for="fabric_image" class="block font-medium text-sm text-gray-700">Fabric Image</label><br>
+                            @if($fabric->image_path)
+                                <img src="{{ asset('storage/'.$fabric->image_path) }}" alt="fabric image" class="w-32 mb-2 rounded-md shadow">
+                            @endif
+                            <input type="file" name="fabric_image" id="fabric_image"
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('fabric_image') border-red-500 @enderror">
+                            @error('fabric_image')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Supplier --}}
+                        <div class="mb-4">
+                            <label for="supplier_id" class="block font-medium text-sm text-gray-700">Supplier *</label>
+                            <select name="supplier_id" id="supplier_id"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm @error('supplier_id') border-red-500 @enderror"
+                                    required>
+                                @foreach($suppliers as $supplier)
+                                    <option value="{{ $supplier->id }}" {{ old('supplier_id', $fabric->supplier_id) == $supplier->id ? 'selected' : '' }}>
+                                        {{ $supplier->company_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('supplier_id')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <x-primary-button>Update Fabric</x-primary-button>
+                            <a href="{{ route('fabrics.index') }}" class="text-gray-600 hover:underline">Cancel</a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
         </div>
-
-        {{-- Composition --}}
-        <div class="mb-3">
-            <label for="composition" class="form-label">Composition *</label>
-            <input type="text" name="composition" class="form-control"
-                   value="{{ old('composition', $fabric->composition) }}" required>
-        </div>
-
-        {{-- GSM --}}
-        <div class="mb-3">
-            <label for="gsm" class="form-label">GSM *</label>
-            <input type="number" name="gsm" class="form-control"
-                   value="{{ old('gsm', $fabric->gsm) }}" required>
-        </div>
-
-        {{-- Qty --}}
-        <div class="mb-3">
-            <label for="qty" class="form-label">QTY *</label>
-            <input type="number" name="qty" class="form-control"
-                   value="{{ old('qty', $fabric->qty) }}" required>
-        </div>
-
-        {{-- Cuttable Width --}}
-        <div class="mb-3">
-            <label for="cuttable_width" class="form-label">Cuttable Width *</label>
-            <input type="text" name="cuttable_width" class="form-control"
-                   value="{{ old('cuttable_width', $fabric->cuttable_width) }}" required>
-        </div>
-
-        {{-- Production Type --}}
-        <div class="mb-3">
-            <label for="production_type" class="form-label">Production Type *</label>
-            <select name="production_type" class="form-select" required>
-                <option value="Sample Yardage" {{ $fabric->production_type == 'Sample Yardage' ? 'selected' : '' }}>Sample Yardage</option>
-                <option value="SMS" {{ $fabric->production_type == 'SMS' ? 'selected' : '' }}>SMS</option>
-                <option value="Bulk" {{ $fabric->production_type == 'Bulk' ? 'selected' : '' }}>Bulk</option>
-            </select>
-        </div>
-
-        {{-- Optional fields --}}
-        <div class="mb-3">
-            <label for="construction" class="form-label">Construction</label>
-            <input type="text" name="construction" class="form-control"
-                   value="{{ old('construction', $fabric->construction) }}">
-        </div>
-
-        <div class="mb-3">
-            <label for="pantone_code" class="form-label">Pantone Code</label>
-            <input type="text" name="pantone_code" class="form-control"
-                   value="{{ old('pantone_code', $fabric->pantone_code) }}">
-        </div>
-
-        <div class="mb-3">
-            <label for="weave_type" class="form-label">Weave Type</label>
-            <input type="text" name="weave_type" class="form-control"
-                   value="{{ old('weave_type', $fabric->weave_type) }}">
-        </div>
-
-        <div class="mb-3">
-            <label for="finish_type" class="form-label">Finish Type</label>
-            <input type="text" name="finish_type" class="form-control"
-                   value="{{ old('finish_type', $fabric->finish_type) }}">
-        </div>
-
-        <div class="mb-3">
-            <label for="dyeing_method" class="form-label">Dyeing Method</label>
-            <input type="text" name="dyeing_method" class="form-control"
-                   value="{{ old('dyeing_method', $fabric->dyeing_method) }}">
-        </div>
-
-        <div class="mb-3">
-            <label for="printing_method" class="form-label">Printing Method</label>
-            <input type="text" name="printing_method" class="form-control"
-                   value="{{ old('printing_method', $fabric->printing_method) }}">
-        </div>
-
-        <div class="mb-3">
-            <label for="lead_time" class="form-label">Lead Time</label>
-            <input type="text" name="lead_time" class="form-control"
-                   value="{{ old('lead_time', $fabric->lead_time) }}">
-        </div>
-
-        <div class="mb-3">
-            <label for="moq" class="form-label">MOQ</label>
-            <input type="number" name="moq" class="form-control"
-                   value="{{ old('moq', $fabric->moq) }}">
-        </div>
-
-        <div class="mb-3">
-            <label for="shrinkage" class="form-label">Shrinkage (%)</label>
-            <input type="number" step="0.01" name="shrinkage" class="form-control"
-                   value="{{ old('shrinkage', $fabric->shrinkage) }}">
-        </div>
-
-        <div class="mb-3">
-            <label for="remarks" class="form-label">Remarks</label>
-            <textarea name="remarks" class="form-control">{{ old('remarks', $fabric->remarks) }}</textarea>
-        </div>
-
-        <div class="mb-3">
-            <label for="fabric_selected_by" class="form-label">Fabric Selected By</label>
-            <input type="text" name="fabric_selected_by" class="form-control"
-                   value="{{ old('fabric_selected_by', $fabric->fabric_selected_by) }}">
-        </div>
-
-        {{-- Image Upload --}}
-        <div class="mb-3">
-            <label for="image" class="form-label">Fabric Image</label><br>
-            @if($fabric->image_path)
-                <img src="{{ asset('storage/'.$fabric->image_path) }}" alt="fabric image" width="120" class="mb-2">
-            @endif
-            <input type="file" name="image" class="form-control">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Update Fabric</button>
-        <a href="{{ route('fabrics.index') }}" class="btn btn-secondary">Cancel</a>
-    </form>
-</div>
-@endsection
+    </div>
+</x-app-layout>

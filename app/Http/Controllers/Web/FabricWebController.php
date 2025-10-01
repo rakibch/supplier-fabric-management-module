@@ -26,7 +26,7 @@ class FabricWebController extends Controller
 
     public function index(Request $request)
     {
-        $filters = $request->only(['company_name','fabric_no','composition','production_type']);
+        $filters = $request->only(['company_name', 'fabric_no', 'composition', 'production_type']);
 
         $fabrics = Fabric::with('supplier')
             ->filter($filters)
@@ -34,7 +34,7 @@ class FabricWebController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-        return view('fabrics.index', compact('fabrics','filters'));
+        return view('fabrics.index', compact('fabrics', 'filters'));
     }
 
     public function create()
@@ -48,7 +48,6 @@ class FabricWebController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('image')) {
-            // FabricService::uploadImage stores on 'public' disk and returns path
             $data['image_path'] = $this->service->uploadImage($request->file('image'));
         }
 
@@ -68,34 +67,36 @@ class FabricWebController extends Controller
             ]);
         }
 
-        // generate barcode
         $barcode = $this->service->generateUniqueBarcodeForFabric($fabric, Auth::id());
 
-        return redirect()->route('web.fabrics.show', $fabric)->with('success', 'Fabric created and barcode generated.');
+        return redirect()->route('web.fabrics.show', $fabric->id)->with('success', 'Fabric created and barcode generated.');
     }
 
     public function show(Fabric $fabric)
     {
-        $fabric->load('supplier','stocks','barcodes');
+        $fabric->load('supplier', 'stocks', 'barcodes');
         return view('fabrics.show', compact('fabric'));
     }
 
     public function edit(Fabric $fabric)
     {
         $suppliers = Supplier::orderBy('company_name')->get();
-        return view('fabrics.edit', compact('fabric','suppliers'));
+        return view('fabrics.edit', compact('fabric', 'suppliers'));
     }
 
     public function update(UpdateFabricRequest $request, Fabric $fabric)
     {
         $data = $request->validated();
 
-        if ($request->hasFile('image')) {
-            // delete old
+        // Handle Fabric Image upload
+        if ($request->hasFile('fabric_image')) {
+            echo 'ok';
+            // Delete old image if exists
             if ($fabric->image_path) {
                 Storage::disk('public')->delete($fabric->image_path);
             }
-            $data['image_path'] = $this->service->uploadImage($request->file('image'));
+            // Upload new image
+            $data['image_path'] = $this->service->uploadImage($request->file('fabric_image'));
         }
 
         $data['updated_by'] = Auth::id();
@@ -103,8 +104,10 @@ class FabricWebController extends Controller
 
         $fabric->update($data);
 
-        return redirect()->route('web.fabrics.show', $fabric)->with('success', 'Fabric updated.');
+        return redirect()->route('web.fabrics.show', $fabric)
+            ->with('success', 'Fabric updated successfully.');
     }
+
 
     public function destroy(Fabric $fabric)
     {
@@ -126,7 +129,7 @@ class FabricWebController extends Controller
     {
         $f = Fabric::onlyTrashed()->findOrFail($id);
         $f->restore();
-        return redirect()->route('web.fabrics.trash')->with('success','Fabric restored.');
+        return redirect()->route('web.fabrics.trash')->with('success', 'Fabric restored.');
     }
 
     public function addStock(Request $request, Fabric $fabric)
@@ -140,13 +143,13 @@ class FabricWebController extends Controller
         $data['created_by'] = Auth::id();
         $fabric->stocks()->create($data);
 
-        return back()->with('success','Stock updated.');
+        return back()->with('success', 'Stock updated.');
     }
 
     public function barcode(Fabric $fabric)
     {
         $barcode = $fabric->barcodes()->latest()->first();
-        return view('fabrics.barcode', compact('fabric','barcode'));
+        return view('fabrics.barcode', compact('fabric', 'barcode'));
     }
 
     public function printBarcode(FabricBarCode $barcode)
@@ -154,7 +157,7 @@ class FabricWebController extends Controller
         $imgBase64 = $this->service->getBarcodeBase64($barcode);
         $fabric = $barcode->fabric()->with('supplier')->first();
 
-        $pdf = Pdf::loadView('pdfs.fabric_barcode', compact('imgBase64','barcode','fabric'));
+        $pdf = Pdf::loadView('pdf.fabric_barcode', compact('imgBase64', 'barcode', 'fabric'));
         return $pdf->stream("barcode_{$barcode->id}.pdf");
     }
 }

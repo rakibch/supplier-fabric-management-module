@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class FabricBarCode extends Model
 {
     use HasFactory;
-
+    protected $table = 'fabric_barcodes';
     protected $fillable = ['fabric_id','barcode_value','barcode_image_path','generated_at','generated_by'];
 
     public function fabric()

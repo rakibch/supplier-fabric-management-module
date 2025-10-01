@@ -20,7 +20,7 @@ class UpdateFabricRequest extends FormRequest
      */
     public function rules(): array
     {
-        $fabricId = $this->route('fabric');
+        $fabricId = $this->route('web.fabrics') ? $this->route('web.fabrics')->id : null;
 
         return [
             // Required fields
